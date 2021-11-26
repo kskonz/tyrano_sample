@@ -1,46 +1,94 @@
+[macro name=Choices]
+[if exp="tf.cab==0"]
+[link target=*AnsA]A [graph storage="cabimg.jpg"][endlink][r]
+[link target=*AnsB]B [graph storage="letimg.jpg"][endlink][r]
+[s]
+[else]
+[link target=*AnsA]A [graph storage="letimg.jpg"][endlink][r]
+[link target=*AnsB]B [graph storage="cabimg.jpg"][endlink][r]
+[s]
+[endif]
+[endmacro]
+
 *start
 
-[title name="走るか寝るかするメロス"]
+[title name="キャベツとレタス"]
 [hidemenubutton]
 [wait time=200]
 [freeimage layer="base"]
 
-「走るか寝るかするメロス」[l][r]
-
-メロスは激怒した。[l][r]
-
-必ず、かの邪智暴虐の王を除かねばならぬと決意した。[l][r]
-
-(中略)[l][r]
-
-ああ、何もかも、ばかばかしい。私は、醜い裏切り者だ。どうとも、勝手にするがよい。やんぬる哉。[l][r]
-メロスは...[l][r]
-
-[link target=*tag_sleep] →寝る [endlink][r]
-[link target=*tag_run] →走る [endlink][r]
-[s]
-
-*tag_sleep
+[bg storage=kitchen.png time=500]
 
 [cm]
 
-[bg storage=sleep.jpg time=500]
+キャベツかレタス、正しい方を選んでね[l][r]
 
-メロスは死んだように深く眠った。[l][r]
-勇者は、ひどく赤面した。[r]
+クリックしてゲームスタート！[l][r]
 
-【 BAD END 】[l][cm]
+[cm]
+
+[iscript]
+tf.pattern = Math.floor( Math.random() * 4) + 1
+tf.cab = Math.floor( Math.random() * 2)
+tf.let = 1 - tf.cab
+tf.Answer=0
+[endscript]
+
+
+[if exp="tf.pattern == 1"]
+
+[eval exp="tf.Answer = tf.cab"]
+キャベツはどっち？[l][r]
+[Choices]
+
+[elsif exp="tf.pattern == 2"]
+
+[eval exp="tf.Answer = tf.let"]
+レタスはどっち？[l][r]
+[Choices]
+
+[elsif exp="tf.pattern == 3"]
+
+[eval exp="tf.Answer = tf.let"]
+キャベツじゃないのはどっち？[l][r]
+[Choices]
+
+[elsif exp="tf.pattern == 4]
+
+[eval exp="tf.Answer = tf.cab"]
+レタスじゃないのはどっち？[l][r]
+[Choices]
+
+[endif]
+
+*AnsA
+
+[if exp="tf.Answer == 0"]
+
+[r][r][r]正解![r]
+
+[else]
+
+[r][r][r]不正解…[r]
+
+[endif]
+
+[l][cm]
 
 [jump target=*start]
 
-*tag_run
+*AnsB
 
-[bg storage=run.jpg time=500]
+[if exp="tf.Answer == 1"]
 
-[cm]
-メロスは黒い風のように走った。[l][r]
-陽は、ゆらゆら地平線に没し、まさに最後の一片の残光も、消えようとした時、メロスは疾風の如く刑場に突入した。間に合った。[r]
+[r][r][r]正解![r]
 
-【 GOOD END 】[l][cm]
+[else]
+
+[r][r][r]不正解…[r]
+
+[endif]
+
+[l][cm]
 
 [jump target=*start]
